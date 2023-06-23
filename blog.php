@@ -40,6 +40,11 @@ if(isset($_POST['login'])){
         $_SESSION['error'] = "Incorrect Username/Password";
     }
 }
+//posting comments when the submit button is pressed.
+
+if(isset($_POST['submitCom1'])){
+    
+}
    
     
     ?>
@@ -85,7 +90,7 @@ body {font-family: Arial;}
   background-color: #ccc;
 }
 
-/* Style the tab content */
+/* Style the tab commentCont1 */
 .tabcontent {
   display: none;
   padding: 6px 12px;
@@ -101,7 +106,7 @@ body {font-family: Arial;}
 if(!isset($_SESSION['validUser'])){
 ?>
 <div class="login">
-<button class="tablinks" onclick="openCity(event, 'Login')">Login</button>
+<button class="tablinks" onclick="openTab(event, 'Login')">Login</button>
 </div>
 <?php
 }else{
@@ -131,33 +136,70 @@ if(!isset($_SESSION['validUser'])){
 
                 ?>  
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'Post1')">Post 1</button>
-  <button class="tablinks" onclick="openCity(event, 'Post2')">Post 2</button>
-  <button class="tablinks" onclick="openCity(event, 'Post3')">Post 3</button>
-  <button class="tablinks" onclick="openCity(event, 'Post4')">Post 4</button>
+  <button class="tablinks" onclick="openTab(event, 'Post1')">Post 1</button>
+  <button class="tablinks" onclick="openTab(event, 'Post2')">Post 2</button>
+  <button class="tablinks" onclick="openTab(event, 'Post3')">Post 3</button>
+  <button class="tablinks" onclick="openTab(event, 'Post4')">Post 4</button>
 </div>
 
 <div id="Post1" class="tabcontent">
   <h3>Post 1</h3>
   <p>London is the capital city of England.</p>
+  <?php if(isset($_SESSION['validUser'])){ ?>
+<form method="post">
+<textarea rows="5" cols="45" name="commentCont1" onkeyup="CharacterCount1(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input type="submit" value="Submit Comment" name="submitCom1">
+                </form>
+<div id="charCountVal1" >0 / 255</div>
+<?php 
+  }
+  ?>
 </div>
 
 <div id="Post2" class="tabcontent">
   <h3>Post 2</h3>
   <p>Paris is the capital of France.</p> 
+  <?php if(isset($_SESSION['validUser'])){ ?>
+  <form method="post">
+<textarea rows="5" cols="45" name="commentCont2" onkeyup="CharacterCount2(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input type="submit" value="Submit Comment" name='submitCom2'> 
+ </form>
+<div id="charCountVal2" >0 / 255</div>
+<?php
+  }
+?>
 </div>
+
 
 <div id="Post3" class="tabcontent">
   <h3>Post 3</h3>
   <p>Tokyo is the capital of Japan.</p>
+  <?php if(isset($_SESSION['validUser'])){ ?>
+  <form method="post">
+<textarea rows="5" cols="45" name="commentCont3" onkeyup="CharacterCount3(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input type="submit" value="Submit Comment" name='submitCom3'>
+       </form>
+<div id="charCountVal3" >0 / 255</div>
+<?php
+  }
+  ?>
 </div>
 <div id="Post4" class="tabcontent">
   <h3>Post 4</h3>
   <p></p>
+  <?php if(isset($_SESSION['validUser'])){ ?>
+  <form method="post">
+<textarea rows="5" cols="45" name="commentCont4" onkeyup="CharacterCount4(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input type="submit" value="Submit Comment" name='submitCom4'>
+               </form>
+<div id="charCountVal4" >0 / 255</div>
+<?php
+  }
+  ?>
 </div>
 
 <script>
-function openCity(evt, cityName) {
+function openTab(evt, blogName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -167,13 +209,29 @@ function openCity(evt, cityName) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(cityName).style.display = "block";
+  document.getElementById(blogName).style.display = "block";
   evt.currentTarget.className += " active";
 }
+
 </script>
    
 </body>
 </html> 
+
+<script>
+function CharacterCount1(object){
+	document.getElementById("charCountVal1").innerHTML = object.value.length+' /255';
+}
+function CharacterCount2(object){
+	document.getElementById("charCountVal2").innerHTML = object.value.length+' /255';
+}
+function CharacterCount3(object){
+	document.getElementById("charCountVal3").innerHTML = object.value.length+' /255';
+}
+function CharacterCount4(object){
+	document.getElementById("charCountVal4").innerHTML = object.value.length+' /255';
+}
+</script>
 <?php
 
 unset($_SESSION["error"]);
