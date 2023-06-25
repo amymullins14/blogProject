@@ -13,6 +13,7 @@ if ( mysqli_connect_errno() ) {
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
+
 if(isset($_POST['login'])){
     $uname = $_POST['uname'];
     $pword = $_POST['pword'];
@@ -21,11 +22,9 @@ if(isset($_POST['login'])){
         $stmt->bind_param('s', $uname);
         $stmt->execute();
         $stmt->store_result();
-        echo("Hello");
         if ($stmt->num_rows > 0) {
             $stmt->bind_result($uid, $uname, $hashpword);
             $stmt->fetch();
-            echo("World");
             if (password_verify($pword, $hashpword)){
                 // Create sessions variables, so we know the user is logged in, they act like cookies 
             $_SESSION['validUser'] = TRUE;
@@ -40,13 +39,46 @@ if(isset($_POST['login'])){
         $_SESSION['error'] = "Incorrect Username/Password";
     }
 }
+
+
+
 //posting comments when the submit button is pressed.
 
 if(isset($_POST['submitCom1'])){
-    
+    $commentCont = $_POST['commentCont1'];
+    //parameterised query to stop sql injection
+    $stmt = $con->prepare('INSERT INTO comments(userid, commentText, blogNum) VALUES (?, ?, 1)');
+        $stmt->bind_param('ss', $_SESSION['uid'], $commentCont);
+        $stmt->execute();
+        unset($_POST['submitCom1']);
+        header("Refresh:0");
+        
+        
 }
-   
-    
+if(isset($_POST['submitCom2'])){
+    $commentCont = $_POST['commentCont2'];
+    $stmt = $con->prepare('INSERT INTO comments(userid, commentText, blogNum) VALUES (?, ?, 2)');
+        $stmt->bind_param('ss', $_SESSION['uid'], $commentCont);
+        $stmt->execute();
+        unset($_POST['submitCom2']);
+        header("Refresh:0");
+}
+if(isset($_POST['submitCom3'])){
+    $commentCont = $_POST['commentCont3'];
+    $stmt = $con->prepare('INSERT INTO comments(userid, commentText, blogNum) VALUES (?, ?, 3)');
+        $stmt->bind_param('ss', $_SESSION['uid'], $commentCont);
+        $stmt->execute();
+        unset($_POST['submitCom3']);
+        header("Refresh:0");
+}
+if(isset($_POST['submitCom4'])){
+    $commentCont = $_POST['commentCont4'];
+    $stmt = $con->prepare('INSERT INTO comments(userid, commentText, blogNum) VALUES (?, ?, 4)');
+        $stmt->bind_param('ss', $_SESSION['uid'], $commentCont);
+        $stmt->execute();
+        unset($_POST['submitCom4']);
+        header("Refresh:0");
+}
     ?>
 <html>
 <head>
@@ -145,7 +177,17 @@ if(!isset($_SESSION['validUser'])){
 <div id="Post1" class="tabcontent">
   <h3>Post 1</h3>
   <p>London is the capital city of England.</p>
-  <?php if(isset($_SESSION['validUser'])){ ?>
+  <?php 
+  $stmt = $con->prepare('SELECT accounts.username, comments.commentText, comments.blogNum FROM comments INNER JOIN accounts ON comments.userid = accounts.userid WHERE blogNum = 1;');
+  $stmt->execute();
+  $comResults = $stmt->get_result();
+  while($rowData = $comResults->fetch_assoc()){?>
+    <span><?php echo $rowData['username'];?></span><br>
+    <span><?php echo $rowData['commentText'];?></span><br><ul>
+<?php
+  }
+
+  if(isset($_SESSION['validUser'])){ ?>
 <form method="post">
 <textarea rows="5" cols="45" name="commentCont1" onkeyup="CharacterCount1(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
 <input type="submit" value="Submit Comment" name="submitCom1">
@@ -159,7 +201,16 @@ if(!isset($_SESSION['validUser'])){
 <div id="Post2" class="tabcontent">
   <h3>Post 2</h3>
   <p>Paris is the capital of France.</p> 
-  <?php if(isset($_SESSION['validUser'])){ ?>
+  <?php 
+  $stmt = $con->prepare('SELECT accounts.username, comments.commentText, comments.blogNum FROM comments INNER JOIN accounts ON comments.userid = accounts.userid WHERE blogNum = 2;');
+  $stmt->execute();
+  $comResults = $stmt->get_result();
+  while($rowData = $comResults->fetch_assoc()){ ?>
+    <span><?php echo $rowData['username'];?></span><br>
+    <span><?php echo $rowData['commentText'];?></span><br><ul>
+<?php
+}
+   if(isset($_SESSION['validUser'])){ ?>
   <form method="post">
 <textarea rows="5" cols="45" name="commentCont2" onkeyup="CharacterCount2(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
 <input type="submit" value="Submit Comment" name='submitCom2'> 
@@ -174,7 +225,15 @@ if(!isset($_SESSION['validUser'])){
 <div id="Post3" class="tabcontent">
   <h3>Post 3</h3>
   <p>Tokyo is the capital of Japan.</p>
-  <?php if(isset($_SESSION['validUser'])){ ?>
+  <?php $stmt = $con->prepare('SELECT accounts.username, comments.commentText, comments.blogNum FROM comments INNER JOIN accounts ON comments.userid = accounts.userid WHERE blogNum = 3;');
+  $stmt->execute();
+  $comResults = $stmt->get_result();
+  while($rowData = $comResults->fetch_assoc()){ ?>
+    <span><?php echo $rowData['username'];?></span><br>
+    <span><?php echo $rowData['commentText'];?></span><br><ul>
+<?php
+}
+   if(isset($_SESSION['validUser'])){ ?>
   <form method="post">
 <textarea rows="5" cols="45" name="commentCont3" onkeyup="CharacterCount3(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
 <input type="submit" value="Submit Comment" name='submitCom3'>
@@ -187,7 +246,15 @@ if(!isset($_SESSION['validUser'])){
 <div id="Post4" class="tabcontent">
   <h3>Post 4</h3>
   <p></p>
-  <?php if(isset($_SESSION['validUser'])){ ?>
+  <?php $stmt = $con->prepare('SELECT accounts.username, comments.commentText, comments.blogNum FROM comments INNER JOIN accounts ON comments.userid = accounts.userid WHERE blogNum = 4;');
+  $stmt->execute();
+  $comResults = $stmt->get_result();
+  while($rowData = $comResults->fetch_assoc()){ ?>
+    <span><?php echo $rowData['username'];?></span><br>
+    <span><?php echo $rowData['commentText'];?></span><br><ul>
+<?php
+}
+ if(isset($_SESSION['validUser'])){ ?>
   <form method="post">
 <textarea rows="5" cols="45" name="commentCont4" onkeyup="CharacterCount4(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
 <input type="submit" value="Submit Comment" name='submitCom4'>
