@@ -4,20 +4,25 @@ html,body{ margin:0; padding:0; height:100%; width:100%; font-family: Georgia, s
 
 .btnRight{
     text-align:right;
+    font-family: Georgia, serif;
+    font-weight: bold;
 }
+
+
 .loginButton{
-    background-color: #27445C; /* Green */
+    background-color: #27445C; 
     border: none;
     color: white;
     padding: 15px 32px;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    transition: 0.3s;
 }
 
+
 .loginButton:hover{
-    color: #27445C;
-    background-color: white;
+    opacity: 0.8;
     cursor:pointer;
 }
 
@@ -92,13 +97,14 @@ html,body{ margin:0; padding:0; height:100%; width:100%; font-family: Georgia, s
     font-size: 20px;
   }
 
+ 
 
 /* Style the tab */
 .tab {
     
     overflow: hidden;
     border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    
     margin: 0px;
     float: left;
     background-color: #edf2f3;
@@ -119,7 +125,7 @@ html,body{ margin:0; padding:0; height:100%; width:100%; font-family: Georgia, s
       cursor: pointer;
       transition: 0.3s;
       font-size: 17px;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: 'Helvetica', sans-serif;
   }
   
   /* Change background color of buttons on hover */

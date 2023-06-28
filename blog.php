@@ -1,6 +1,8 @@
 <?php 
 session_start();
 include('config.php');
+
+
 //defining database connection parameters
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'projectUser';
@@ -12,7 +14,6 @@ if ( mysqli_connect_errno() ) {
 	// If there is an error with the connection, stop the script and display the error.
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
-
 
 if(isset($_POST['login'])){
     $uname = $_POST['uname'];
@@ -29,17 +30,15 @@ if(isset($_POST['login'])){
                 // Create sessions variables, so we know the user is logged in, they act like cookies 
             $_SESSION['validUser'] = TRUE;
             $_SESSION['uid'] = $uid;
-            
-
+            $_SESSION['uname'] = $uname;
+        
             } else{
                 $_SESSION['error'] = "Incorrect Username/Password";
-                echo("error");
             }
     } else{
         $_SESSION['error'] = "Incorrect Username/Password";
     }
 }
-
 //posting comments when the submit button is pressed.
 
 if(isset($_POST['submitCom1'])){
@@ -91,17 +90,21 @@ if(!isset($_SESSION['validUser'])){
 <div class="btnRight">
 <button style="font-family: Georgia, serif;" class="loginButton" onclick="openForm()">LOGIN</button>
 </div>
-<div class= "banner">
-</div>
+
 <?php
 }else{
-//display the logout button if user is not logged in
+//display the welcome message and logout button if user is not logged in
 ?>
+<div style="background: #edf2f3;" class="btnRight">
+<a style="font-family: Georgia, serif; color: #27445C;" >WELCOME <?php echo(strtoupper(htmlspecialchars($_SESSION['uname'])));?>!&emsp;&ensp;</a>
 <a href="logout.php" class="loginButton">LOGOUT</a>
-
+</div>
+<div style="background: #edf2f3"> </div>
 <?php
 }
 ?>
+<div class= "banner">
+</div>
 <div id="loginForm" class="loginForm">
     <form method = "post" class="form-container">
     <label for="username">Username:</label><br>
@@ -118,13 +121,12 @@ if(!isset($_SESSION['validUser'])){
 </div>
 
 <?php
-                //display the error message to the user if the error session variable is set.
-                    if(isset($_SESSION['error'])){
-                        $error = $_SESSION["error"];
-                        echo($error);
-                    }
-
-                ?>  
+        //display an error message to the user if the username/password is incorrect.
+        if(isset($_SESSION['error'])){ ?>
+        <script>alert("Incorrect Username or Password!")</script>
+        <?php
+                       
+    } ?>  
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Post1')">Post 1</button>
   <button class="tablinks" onclick="openTab(event, 'Post2')">Post 2</button>
@@ -132,7 +134,7 @@ if(!isset($_SESSION['validUser'])){
   <button class="tablinks" onclick="openTab(event, 'Post4')">Post 4</button>
 </div>
 
-<div id="Post1" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;">
+<div id="Post1" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;"><br><br>
   <h2>Post 1</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam pulvinar consectetur pellentesque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque eget sollicitudin felis. Quisque eros lorem, tincidunt ut neque sit amet, finibus feugiat nisi. Praesent scelerisque lectus erat, non facilisis mi laoreet id. Suspendisse tempor, ipsum eu feugiat dignissim, mi est malesuada velit, ac sagittis tellus lectus vel nulla. Nunc vel ultricies tortor, quis faucibus purus. Pellentesque pretium fringilla ligula, et aliquet massa consequat ac.
 
@@ -144,25 +146,26 @@ if(!isset($_SESSION['validUser'])){
   $comResults = $stmt->get_result();
   while($rowData = $comResults->fetch_assoc()){?>
     <div style=" margin-left:20px; text-indent: 10px;
-    border-width:3px; border-style:solid; border-color:#81A2BD; ">
-    <span ><?php echo $rowData['username'];?></span><br>
-    <span><?php echo $rowData['commentText'];?></span><br><ul>
+    border-width:2px; border-style:solid; border-color:#81A2BD; ">
+    <span style="font-weight:bolder;"><?php echo htmlspecialchars($rowData['username']);?></span><br>
+    <span style="margin: 3px; font-size: 17px;"><?php echo htmlspecialchars($rowData['commentText']);?></span><br>
   </div><br>
 <?php
   }
 
   if(isset($_SESSION['validUser'])){ ?>
-<form method="post">
-<textarea rows="5" cols="45" name="commentCont1" onkeyup="CharacterCount1(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
-<input type="submit" value="Submit Comment" name="submitCom1">
+<br><form method="post">
+<textarea style="font-size:17px; margin-left: 20px;" rows="5" cols="45" name="commentCont1" onkeyup="CharacterCount1(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input style="font-size: 20px;" type="submit" value="Submit Comment" name="submitCom1" onclick="return confirm('Are you sure you want to submit this comment?')">
+<div id="charCountVal1" style="font-size: 15px; margin-left: 14px;" >0 / 255</div>
                 </form>
-<div id="charCountVal1" >0 / 255</div>
+
 <?php 
   }
   ?>
 </div>
 
-<div id="Post2" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;">
+<div id="Post2" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;"><br><br>
   <h2>Post 2</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rhoncus diam eget posuere tincidunt. Cras sollicitudin tellus ligula, quis sollicitudin neque consectetur a. Aliquam augue ante, ornare eleifend congue sit amet, vulputate eu orci. In nunc arcu, ultricies vitae ullamcorper vitae, egestas ac tortor. Suspendisse potenti. Mauris imperdiet eros a ipsum pulvinar, feugiat commodo dui mollis. Donec vehicula eget nunc id sagittis. Mauris tincidunt nulla nec diam vestibulum porta. Pellentesque interdum lectus leo, non finibus velit tincidunt nec. Ut et risus rutrum, lobortis nisl sit amet, venenatis augue.
 
@@ -175,23 +178,27 @@ if(!isset($_SESSION['validUser'])){
   $stmt->execute();
   $comResults = $stmt->get_result();
   while($rowData = $comResults->fetch_assoc()){ ?>
-    <span><?php echo $rowData['username'];?></span><br>
-    <span><?php echo $rowData['commentText'];?></span><br><ul>
+     <div style=" margin-left:20px; text-indent: 10px;
+    border-width:2px; border-style:solid; border-color:#81A2BD; ">
+    <span style="font-weight:bolder;"><?php echo htmlspecialchars($rowData['username']);?></span><br>
+    <span style="margin: 3px; font-size: 17px;"><?php echo htmlspecialchars($rowData['commentText']);?></span><br>
+  </div><br>
 <?php
 }
    if(isset($_SESSION['validUser'])){ ?>
-  <form method="post">
-<textarea rows="5" cols="45" name="commentCont2" onkeyup="CharacterCount2(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
-<input type="submit" value="Submit Comment" name='submitCom2'> 
+  <br><form method="post">
+<textarea style="font-size:17px; margin-left: 20px;" rows="5" cols="45" name="commentCont2" onkeyup="CharacterCount2(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input style="font-size: 20px;" type="submit" value="Submit Comment" name='submitCom2' onclick="return confirm('Are you sure you want to submit this comment?')"> 
+<div id="charCountVal2" style="font-size: 15px; margin-left: 14px;" >0 / 255</div>
  </form>
-<div id="charCountVal2" >0 / 255</div>
+
 <?php
   }
 ?>
 </div>
 
 
-<div id="Post3" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;">
+<div id="Post3" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;"><br><br>
   <h2>Post 3</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pulvinar magna mattis lorem efficitur vestibulum. Pellentesque at suscipit est, eget ultrices ligula. Cras nec cursus tellus. Proin eget augue eget felis faucibus auctor. Fusce varius elit a rhoncus porta. Aliquam porta nibh scelerisque elit gravida, vitae dapibus justo dignissim. Ut et erat euismod, vestibulum dolor sed, vehicula mi. Fusce volutpat diam id ligula gravida finibus. Cras tempor magna eu augue gravida, eget condimentum urna imperdiet. Curabitur non lacinia quam. Nulla placerat mauris in pretium sollicitudin. Nunc porttitor molestie scelerisque. Nam pellentesque sapien nec erat cursus finibus. In at sapien eget lorem pulvinar suscipit.
 
@@ -206,21 +213,24 @@ if(!isset($_SESSION['validUser'])){
   $stmt->execute();
   $comResults = $stmt->get_result();
   while($rowData = $comResults->fetch_assoc()){ ?>
-    <span><?php echo $rowData['username'];?></span><br>
-    <span ><?php echo $rowData['commentText'];?></span><br>
-<?php
+     <div style=" margin-left:20px; text-indent: 10px;
+    border-width:2px; border-style:solid; border-color:#81A2BD; ">
+    <span style="font-weight:bolder;"><?php echo htmlspecialchars($rowData['username']);?></span><br>
+    <span style="margin: 3px; font-size: 17px;"><?php echo htmlspecialchars($rowData['commentText']);?></span><br>
+  </div><br><?php
 }
    if(isset($_SESSION['validUser'])){ ?>
-  <form method="post">
-<textarea rows="5" cols="45" name="commentCont3" onkeyup="CharacterCount3(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
-<input type="submit" value="Submit Comment" name='submitCom3'>
+  <br><form method="post">
+<textarea style="font-size:17px; margin-left: 20px;" rows="5" cols="45" name="commentCont3" onkeyup="CharacterCount3(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input style="font-size: 20px;" type="submit" value="Submit Comment" name='submitCom3' onclick="return confirm('Are you sure you want to submit this comment?')">
+<div id="charCountVal3" style="font-size: 15px; margin-left: 14px; " >0 / 255</div>
        </form>
-<div id="charCountVal3" >0 / 255</div>
+
 <?php
   }
   ?>
 </div>
-<div id="Post4" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;">
+<div id="Post4" class="tabcontent" style="font-family: 'Montserrat';font-size: 20px;"><br><br>
   <h2>Post 4</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget venenatis ipsum. Cras quam leo, tristique sed consequat ut, auctor quis eros. Curabitur ante orci, condimentum in ipsum nec, suscipit luctus odio. Praesent id dui volutpat, commodo lectus non, mattis elit. Suspendisse orci ipsum, bibendum nec arcu scelerisque, vestibulum consectetur purus. Pellentesque laoreet blandit quam, vel luctus erat elementum et. Nunc sed erat at dui semper laoreet et vitae magna.
 
@@ -232,25 +242,26 @@ if(!isset($_SESSION['validUser'])){
   $stmt->execute();
   $comResults = $stmt->get_result();
   while($rowData = $comResults->fetch_assoc()){ ?>
-    <div style=" margin-left:20px;
-    border-width:3px; border-style:solid; border-color:#81A2BD; ">
-    <span><?php echo $rowData['username'];?></span><br>
-    <span><?php echo $rowData['commentText'];?></span><br><ul>
-  </div>
-<?php
+    <div style=" margin-left:20px; text-indent: 10px;
+    border-width:2px; border-style:solid; border-color:#81A2BD ; ">
+    <span style="font-weight:bolder;"><?php echo htmlspecialchars($rowData['username']);?></span><br>
+    <span style="margin: 3px; font-size: 17px;"><?php echo htmlspecialchars($rowData['commentText']);?></span><br>
+  </div><br><?php
 }
  if(isset($_SESSION['validUser'])){ ?>
-  <form method="post">
-<textarea rows="5" cols="45" name="commentCont4" onkeyup="CharacterCount4(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
-<input type="submit" value="Submit Comment" name='submitCom4'>
+  <br><form method="post">
+<textarea style="font-size:17px; margin-left: 20px;" rows="5" cols="45" name="commentCont4" onkeyup="CharacterCount4(this);" placeholder="Write comment here..." maxlength="255" required></textarea>
+<input style="font-size: 20px;" type="submit" value="Submit Comment" name='submitCom4' onclick="return confirm('Are you sure you want to submit this comment?')">
+<div id="charCountVal4" style="font-size: 15px; margin-left: 14px;" >0 / 255</div>
                </form>
-<div id="charCountVal4" >0 / 255</div>
+
 <?php
   }
   ?>
 </div>
 
 <script>
+    //open and close login form
 function openForm() {
   document.getElementById("loginForm").style.display = "block";
 }
@@ -291,6 +302,31 @@ function CharacterCount4(object){
 	document.getElementById("charCountVal4").innerHTML = object.value.length+' /255';
 }
 </script>
+
+<!-- Session timeout after 30 mins-->
+<script type="text/javascript">
+        var secsCounter = 0;
+        var timer = null;
+        var timeOutSecs = 1800; //30 minutes
+
+        //if the mouse is moved, clicked or a key is pressed, the counter is set back to 0
+        document.onclick = function () { secsCounter = 0; };
+        document.onmousemove = function () { secsCounter = 0; };
+        document.onkeypress = function () { secsCounter = 0; };
+
+        //calls the checkCount() function at 1 second intervals
+        timer = window.setInterval(checkCount, 1000);
+        
+        function checkCount() {
+            secsCounter++;
+            //if the seconds counter is greater or equal to the timeout seconds, alert the user that the session has timed out and redirect.
+            if (secsCounter >= timeOutSecs) {
+                window.clearInterval(timer);
+                alert('Session Timed Out!\n Please Log In');
+                window.location = "logout.php";
+            }
+        }
+    </script>
 <?php
 
 unset($_SESSION["error"]);
