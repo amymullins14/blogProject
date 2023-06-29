@@ -295,14 +295,17 @@ function closeForm() {
 //function for opening a tab when the button is clicked.
 function openTab(evt, blogName) {
   var i, tabcontent, tablinks;
+  //hides content for all tabs
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
+  //clears all tabs from the active classname
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
+  //displays the content for the tab that has been clicked, and sets its class name to active.
   document.getElementById(blogName).style.display = "block";
   evt.currentTarget.className += " active";
 }
