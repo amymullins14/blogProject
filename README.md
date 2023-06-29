@@ -1,4 +1,6 @@
 # blogProject
+This project is being hosted locally using XAMPP.
+
 A blog website which contains 4 different blog articles. These can be accessed using tab navigation.
 A user can view the comments of each article, and they can comment on the articles when logged in.
 All users can see view all user comments.
