@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 30, 2023 at 09:02 AM
+-- Generation Time: Jun 30, 2023 at 09:13 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.10
 
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
-
+--
 -- Table structure for table `accounts`
 --
 
@@ -31,15 +31,6 @@ CREATE TABLE `accounts` (
   `userId` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `pword` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
---
--- Table structure for table `comments`
---
-
-CREATE TABLE `comments` (
-  `userId` int(11) NOT NULL,
-  `commentText` varchar(255) NOT NULL,
-  `blogNum` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -51,6 +42,17 @@ INSERT INTO `accounts` (`userId`, `username`, `pword`) VALUES
 (2, 'amy14', '$2y$10$k4TA0dEEhBVE2au1CeKFLOt7rp4pIwDMBSe6Wrw3A.raKcFD/9aJS'),
 (3, 'mullins1', '$2y$10$C4546HXpEM5vpUKOrDr9ie2Ak8cayzvdfafDDBN4t8V24rrfbW8Ta');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `userId` int(11) NOT NULL,
+  `commentText` varchar(255) NOT NULL,
+  `blogNum` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `comments`
@@ -80,14 +82,11 @@ ALTER TABLE `accounts`
 ALTER TABLE `comments`
   ADD KEY `userId` (`userId`);
 
-
 --
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
   MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-COMMIT;
-
 --
 -- Constraints for table `comments`
 --
