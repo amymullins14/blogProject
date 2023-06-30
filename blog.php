@@ -1,8 +1,6 @@
 <?php 
-
 //start a new session or resume existing session when page is loaded
 session_start();
-include('config.php');
 
 //defining database connection parameters
 $DATABASE_HOST = 'localhost';
