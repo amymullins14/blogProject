@@ -1,0 +1,100 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Jun 30, 2023 at 09:02 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `blogProject`
+--
+
+-- --------------------------------------------------------
+
+
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `userId` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `pword` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `userId` int(11) NOT NULL,
+  `commentText` varchar(255) NOT NULL,
+  `blogNum` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`userId`, `username`, `pword`) VALUES
+(1, 'amymullins', '$2y$10$qaOzZ2F2T3ebsx./DEpOxOEIVfOoKaCRUCUas3YVVNN1oo1D6aGhu'),
+(2, 'amy14', '$2y$10$k4TA0dEEhBVE2au1CeKFLOt7rp4pIwDMBSe6Wrw3A.raKcFD/9aJS'),
+(3, 'mullins1', '$2y$10$C4546HXpEM5vpUKOrDr9ie2Ak8cayzvdfafDDBN4t8V24rrfbW8Ta');
+
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`userId`, `commentText`, `blogNum`) VALUES
+(2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam faucibus, lacus eget porta placerat, nisi mi congue lectus, vel ornare lacus urna sed massa. Vivamus sit amet gravida velit. Curabitur sed erat sollicitudin purus ultrices semper. Nunc rhoncus d', 1),
+(2, 'This is a great article!', 3),
+(1, 'This is a comment ju5t f0r testing!', 1),
+(1, 'Hello World!', 4),
+(3, 'I am an internet user.', 1),
+(3, 'Sed id mollis urna. Duis porttitor lacinia massa non pretium. Etiam sit amet lacinia tellus. Ut ac metus dolor. Suspendisse porttitor semper tincidunt. In hac habitasse platea dictumst. Maecenas dictum mi sed vulputate suscipit. Sed ut nisl neque. Curabit', 4),
+(3, 'Hello World...', 3),
+(2, '\"Morbi a tortor vitae libero rutrum mattis eget id magna. Fusce nisi diam, fermentum a eleifend at, \" - I like this part', 2),
+(2, 'In in rutrum augue. In rutrum pretium neque, quis pellentesque libero placerat finibus. Nullam augue libero, vehicula sit amet elit et, iaculis sollicitudin dui', 3),
+(2, 'Hello World', 1);
+
+--
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`userId`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD KEY `userId` (`userId`);
+
+
+--
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `accounts` (`userId`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
